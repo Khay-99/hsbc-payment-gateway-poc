@@ -55,12 +55,23 @@ public class DemoApplication {
 		// VULN 2: SQL injection, user input concatenated into a query (S3649 / hotspot S2077)
 		// BUG: Connection/Statement never closed, resource leak (S2095)
 		@GetMapping("/user")
-		public String getUser(@RequestParam String name) throws Exception {
-			Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE name = '" + name + "'");
-			return rs.next() ? rs.getString("email") : "not found";
-		}
+		public class UserController {
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public UserController(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public String getUser(@RequestParam String name) {
+        String sql = "SELECT email FROM users WHERE name = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, String.class, name);
+        } catch (EmptyResultDataAccessException e) {
+            return "not found";
+        }
+    }
+}
 
 		// VULN 3: OS command injection (S2076 / hotspot S4721)
 		@GetMapping("/ping")
