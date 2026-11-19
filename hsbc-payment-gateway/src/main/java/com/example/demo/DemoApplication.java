@@ -102,12 +102,12 @@ public class DemoApplication {
 			try {
 				return a / b;
 			} catch (ArithmeticException e) {
-				// swallowed
+				return 0;
 			}
 			try {
-				System.out.println("Dividing " + a + " by " + b);
+				java.util.logging.Logger.getAnonymousLogger().info("Dividing " + a + " by " + b);
 			} catch (Exception e) {
-				e.printStackTrace();
+				java.util.logging.Logger.getAnonymousLogger().severe(e.getMessage());
 			}
 			return 0;
 		}
