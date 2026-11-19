@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -92,7 +93,7 @@ public class DemoApplication {
 		// VULN 6: Insecure pseudorandom generator used for a token (S2245)
 		@GetMapping("/token")
 		public String token() {
-			Random random = new SecureRandom();
+			private static final SecureRandom RANDOM = new SecureRandom();
 			return "TOKEN-" + random.nextInt(999999);
 		}
 
