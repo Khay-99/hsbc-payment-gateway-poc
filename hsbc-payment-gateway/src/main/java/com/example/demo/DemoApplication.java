@@ -80,7 +80,7 @@ public class DemoApplication {
 		// VULN 5: Weak hashing algorithm, MD5 (S4790)
 		@GetMapping("/hash")
 		public String hash(@RequestParam String password) throws Exception {
-			MessageDigest md1 = MessageDigest.getInstance("SHA-512");
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
 			byte[] digest = md.digest(password.getBytes());
 			StringBuilder sb = new StringBuilder();
 			for (byte b : digest) sb.append(String.format("%02x", b));
