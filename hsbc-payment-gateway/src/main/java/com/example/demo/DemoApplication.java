@@ -92,7 +92,7 @@ public class DemoApplication {
 		// VULN 6: Insecure pseudorandom generator used for a token (S2245)
 		@GetMapping("/token")
 		public String token() {
-			Random random = new Random();
+			SecureRandom random = new SecureRandom();
 			return "TOKEN-" + random.nextInt(999999);
 		}
 
